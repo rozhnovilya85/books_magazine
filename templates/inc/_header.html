@@ -1,0 +1,246 @@
+{% load static %}
+		<!-- Header -->
+		<header id="wn__header" class="header__area header__absolute sticky__header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6 col-sm-6 col-6 col-lg-2">
+						<div class="logo">
+							<a href="index.html">
+								<img src="{% static 'css/images/logo/logo.png' %}" alt="logo images">
+							</a>
+						</div>
+					</div>
+					<div class="col-lg-8 d-none d-lg-block">
+						<nav class="mainmenu__nav">
+							<ul class="meninmenu d-flex justify-content-start">
+								<li class="drop with--one--item"><a href="{% url 'index' %}">Книги</a></li>
+								<li class="drop"><a href="{% url 'authors' %}">Авторы</a></li>
+								<li><a href="{% url 'contact' %}">Контакты</a></li>
+                                {% if user.is_authenticated and user.is_superuser  %}
+                                <li><a href="{% url 'admin:index' %}">Админка</a></li>
+                                {% endif %}
+                                {% if user.is_authenticated %}
+                                    {% if user.groups.all.0.name == 'Администратор' %}
+                                <li class="drop"><a href="">Администрирование</a>
+                                    <div class="megamenu mega03">
+									<ul class="item item03">
+										<li><a href="{% url 'supplire_admin' %}">Администрирование поставщиков</a></li>
+										<li><a href="{% url 'books_admin' %}">Администрирование книг</a></li>
+										<li><a href="{% url 'author_admin' %}">Администрирование авторов</a></li>
+									</ul>
+                                    </div>
+								</li>
+                                {% endif %}
+                                {% endif %}
+							</ul>
+						</nav>
+					</div>
+
+					<div class="col-md-6 col-sm-6 col-6 col-lg-2">
+						<ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+							<li class="shop_search"><a class="search__active" href="#"></a></li>
+							<li class="wishlist"><a href="#"></a></li>
+							<li class="shopcart"><a class="cartbox_active" href="#"><span class="product_qun">{{basket.total_price }}</span></a>
+                            {% if user.is_authenticated %}
+                            <li ><a href="#"><span>{% if user.first_name %}{{ user.last_name }} {{ user.first_name }}{% else %}Пользователь{% endif %}</span></a></li>
+                            {% endif %}
+<!-- Start Shopping Cart -->
+						<div class="block-minicart minicart__active">
+							<div class="minicart-content-wrapper">
+								<div class="micart__close">
+									<span>close</span>
+								</div>
+
+								<div class="mini_action checkout">
+									<a class="checkout__btn" href="{% url 'list_basket_prod' %}">Go to Checkout</a>
+								</div>
+
+								<div class="single__items">
+									<div class="miniproduct">
+                                        {% for item in basket %}
+
+
+                                            <div class="item01 d-flex mt--20">
+
+											<div class="thumb">
+
+												<a>{% if item.book.photo %}
+											<a class="first__img" href="{% url 'book_detail' item.book.pk %}"><img src="{{ item.book.photo.url }}" alt="product image" width="80" height="100"></a>
+                                            {% else %}
+                                            <a class="first__img" href="{% url 'book_detail' item.book.pk %}"><img src="{% static 'images/icon_defal.jpg' %}" alt="product image" width="80" height="100"></a>
+                                            {% endif %}</a>
+											</div>
+											<div class="content">
+												<h6><a href="product-details.html">{{ item.book.name }}</a></h6>
+												<span class="prize">{{ item.price_prod }}</span>
+												<div class="product_prize d-flex justify-content-between">
+													<span class="qun">{{item.count_prod}}</span>
+													<ul class="d-flex justify-content-end">
+														<li><a href="#"><i class="zmdi zmdi-settings"></i></a></li>
+														<li><a href="#"><i class="zmdi zmdi-delete"></i></a></li>
+													</ul>
+												</div>
+											</div>
+                                                </div>
+                                            {% endfor %}
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+						<!-- End Shopping Cart -->
+							</li>
+							<li class="setting__bar__icon"><a class="setting__active" href="#"></a>
+								<div class="searchbar__content setting__block">
+									<div class="content-inner">
+										<div class="switcher-currency">
+											<strong class="label switcher-label">
+												<span>Аккуант</span>
+											</strong>
+                                        {% if user.is_authenticated %}
+											<div class="switcher-options">
+												<div class="switcher-currency-trigger">
+													<div class="setting__menu">
+                                                    <span><a href="{% url 'logout' %}">Выйти</a></span>
+                                                        <span>{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}Пользователь{% endif %}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                    {% else %}
+                                                <div class="switcher-options">
+												<div class="switcher-currency-trigger">
+                                                    <div class="setting__menu">
+														<span><a href="{% url 'auth' %}">Войти</a></span>
+														<span><a href="{% url 'registration' %}">Регистрация</a></span>
+													</div>
+												</div>
+											</div>
+										</div>
+                                        {% endif %}
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- Start Mobile Menu -->
+				<div class="row d-none">
+					<div class="col-lg-12 d-none">
+						<nav class="mobilemenu__nav">
+							<ul class="meninmenu">
+								<li><a href="index.html">Home</a>
+									<ul>
+										<li><a href="index.html">Home Style Default</a></li>
+										<li><a href="index-2.html">Home Style Two</a></li>
+										<li><a href="index-box.html">Home Box Style</a></li>
+									</ul>
+								</li>
+								<li><a href="#">Pages</a>
+									<ul>
+										<li><a href="about.html">About Page</a></li>
+										<li><a href="portfolio.html">Portfolio</a>
+											<ul>
+												<li><a href="portfolio.html">Portfolio</a></li>
+												<li><a href="portfolio-three-column.html">Portfolio 3 Column</a></li>
+												<li><a href="portfolio-details.html">Portfolio Details</a></li>
+											</ul>
+										</li>
+										<li><a href="my-account.html">My Account</a></li>
+										<li><a href="cart.html">Cart Page</a></li>
+										<li><a href="checkout.html">Checkout Page</a></li>
+										<li><a href="wishlist.html">Wishlist Page</a></li>
+										<li><a href="error404.html">404 Page</a></li>
+										<li><a href="faq.html">Faq Page</a></li>
+										<li><a href="team.html">Team Page</a></li>
+									</ul>
+								</li>
+								<li><a href="shop-grid.html">Shop</a>
+									<ul>
+										<li><a href="shop-grid.html">Shop Grid</a></li>
+										<li><a href="shop-list.html">Shop List</a></li>
+										<li><a href="shop-left-sidebar.html">Shop Left Sidebar</a></li>
+										<li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
+										<li><a href="shop-no-sidebar.html">Shop No sidebar</a></li>
+										<li><a href="single-product.html">Single Product</a></li>
+									</ul>
+								</li>
+								<li><a href="blog.html">Blog</a>
+									<ul>
+										<li><a href="blog.html">Blog Page</a></li>
+										<li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
+										<li><a href="blog-no-sidebar.html">Blog No Sidebar</a></li>
+										<li><a href="blog-details.html">Blog Details</a></li>
+									</ul>
+								</li>
+								<li><a href="{% url 'contact' %}">Contact</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<!-- End Mobile Menu -->
+	            <div class="mobile-menu d-block d-lg-none">
+	            </div>
+	            <!-- Mobile Menu -->	
+			</div>		
+		</header>
+		<!-- //Header -->
+		<!-- Start Search Popup -->
+		<div class="brown--color box-search-content search_active block-bg close__top">
+			<form id="search_mini_form" class="minisearch" action="#">
+				<div class="field__search">
+					<input type="text" placeholder="Search entire store here...">
+					<div class="action">
+						<a href="#"><i class="zmdi zmdi-search"></i></a>
+					</div>
+				</div>
+			</form>
+			<div class="close__wrap">
+				<span>close</span>
+			</div>
+		</div>
+		<!-- End Search Popup -->
+        <!-- Start Slider area -->
+        <div class="slider-area brown__nav slider--15 slide__activation slide__arrow01 owl-carousel owl-theme">
+        	<!-- Start Single Slide -->
+	        <div class="slide animation__style10 bg-image--8 fullscreen align__center--left ">
+	            <div class="container">
+	            	<div class="row">
+	            		<div class="col-lg-12">
+	            			<div class="slider__content">
+		            			<div class="contentbox">
+								    <h3>Boighor_</h3>
+		            				<h2>The Best <span>Online</span></h2>
+		            				<h2 class="another">book <span>shop </span></h2>
+									<p>Boighor specifically created for authors and writes to present and sell their books online Soufflé tart sweet. </p>
+				                   	<a class="shopbtn" href="#">shop now</a>
+		            			</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+            </div>
+            <!-- End Single Slide -->
+        	<!-- Start Single Slide -->
+	        <div class="slide animation__style10 bg-image--9 fullscreen align__center--left">
+	            <div class="container">
+	            	<div class="row">
+	            		<div class="col-lg-12">
+	            			<div class="slider__content">
+		            			<div class="contentbox">
+								    <h3>Boighor_</h3>
+		            				<h2>The Best <span>Online</span></h2>
+		            				<h2 class="another">book <span>shop </span></h2>
+									<p>Boighor specifically created for authors and writes to present and sell their books online Soufflé tart sweet. </p>
+				                   	<a class="shopbtn" href="#">shop now</a>
+		            			</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+            </div>
+            <!-- End Single Slide -->
+        </div>
+        <!-- End Slider area -->
+	

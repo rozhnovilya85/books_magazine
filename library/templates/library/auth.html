@@ -1,0 +1,46 @@
+﻿	{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+	{% include 'inc/_header_account.html' %}
+
+<!-- Start My Account Area -->
+<section class="my_account_area pt--80 pb--55 bg--white">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-12">
+				<div class="my__account__wrapper">
+					<h3 class="account__title">Login</h3>
+					<form  method="post">
+                    {% csrf_token %}
+						<div class="account__form">
+                            {% for field in form_l %}
+							<div class="input__box" >
+								<label for="{{ field.id_for_label }}">{{ field.label }} <span>*</span></label>
+								{{ field }}
+							</div>
+                            {% endfor %}
+                            <div class="form__btn">
+								<button>Login</button>
+
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+	</div>
+    <div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="alert alert-info"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    </div>
+
+</section>
+<!-- End My Account Area -->
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}

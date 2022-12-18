@@ -1,0 +1,119 @@
+﻿	{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+	{% include 'inc/_header_account.html' %}
+
+        <div class="wishlist-area section-padding--lg bg__white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="wishlist-content">
+                            <form action="#">
+                                <div class="wishlist-table wnro__table table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th class="product-remove"></th>
+                                                <th class="product-thumbnail"></th>
+                                                <th class="product-name"><span class="nobr">Автор</span></th>
+                                                <th class="product-price"><span class="nobr"> Дата рождения </span></th>
+                                                <th class="product-stock-stauts"><span class="nobr"> Дата смерти </span></th>
+                                                <th class="product-add-to-cart"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for author in authors_list %}
+                                            <tr>
+                                                <td class="product-remove"><a type="button" data-toggle="modal" data-target="#exampleModal{{ author.pk }}">Del</a></td>
+                                                <td class="product-thumbnail"><a href="#"><img src="{{ author.photo.url }}" alt="" width="80" height="100"></a></td>
+                                                <td class="product-name"><a href="#">{{ author.author_firstname }} {{ author.author_name }}</a></td>
+                                                <td class="product-price">{{author.date_of_birth}}</td>
+                                                <td class="product-stock-status"><span class="product-price">{% if author_item.date_of_death == None %} {{ '- по настоящее время' }} {% else %} - {{ author_item.date_of_death }} {% endif %}</span></td>
+                                                <td class="product-add-to-cart"><a href="{% url 'author_update' author.pk %}">Редактирование</a></td>
+                                            </tr>
+                                                                                         <!-- Модальное окно -->
+                                                 <div id="exampleModal{{ author.pk }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLiveLabel">Подтвердите удаление автора</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <p>При подтверждении автор удалится из базы данных без возможности востанавления!</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+
+                                               <form method="post" action="{% url 'author_delete' author.pk %}">
+                                                   {% csrf_token %}
+                                            <button
+                                                    type="submit" class="btn btn-danger">Удалить</button>
+                                                   </form>
+
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                        {% endfor %}
+                                        <tr>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td class="product-add-to-cart"><a href="{% url 'author_create' %}">Добавить автора</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<nav aria-label="Page navigation example">
+            <ul class="wn__pagination  justify-content-center">
+                {% if page_obj.has_previous %} {# Проверка наличии предыдущей страницы #}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            {# ^получения номера предыдущей страницы^ #}
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for p in page_obj.paginator.page_range %} {# Перечисление страниц из пагинатора #}
+
+                    {% if p == page_obj.number %} {# Проверка текущей страницы со списком страницы #}
+                        {# Отображение страницы на которой находится пользователь #}
+                        <li class="page-item active" aria-current="page"><a class="page-link"
+                                                                            href="#">{{ p }}</a></li>
+                        {# Вывод всех остальных страниц #}
+                    {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                        {# p > page_obj.number - 3 #} {# 8 > 10 - 3 #}
+                        <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {% if page_obj.has_next %} {# Проверка наличии следующей страницы #}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            {# ^получения номера следующей страницы^ #}
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}

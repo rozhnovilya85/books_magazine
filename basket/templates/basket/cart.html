@@ -1,0 +1,84 @@
+﻿{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+	{% include 'inc/_header_account.html' %}
+        <!-- cart-main-area start -->
+        <div class="cart-main-area section-padding--lg bg--white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 ol-lg-12">
+                        <form action="#">               
+                            <div class="table-content wnro__table table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr class="title-top">
+                                            <th class="product-thumbnail">Изображение</th>
+                                            <th class="product-name">Наименование</th>
+                                            <th class="product-price">Цена</th>
+                                            <th class="product-quantity">Обновить кол-во</th>
+                                            <th class="product-quantity">Количество</th>
+                                            <th class="product-subtotal">Общая стоимость</th>
+                                            <th class="product-remove">Удалить</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in basket %}
+
+                                        <tr>
+                                            <td class="product-thumbnail"><a>
+                                            {% if item.book.photo %}
+											<a class="first__img" href="{% url 'book_detail' item.book.pk %}"><img src="{{ item.book.photo.url }}" alt="product image" width="80" height="100"></a>
+                                            {% else %}
+                                            <a class="first__img" href="{% url 'book_detail' item.book.pk %}"><img src="{% static 'images/icon_defal.jpg' %}" alt="product image" width="80" height="100"></a>
+                                            {% endif %}
+                                            </a></td>
+                                            <td class="product-name"><a href="{{ item.book.get_absolute_url }}">{{ item.book.name }}</a></td>
+                                            <td class="product-price"><span>{{ item.price_prod }}</span></td>
+                                            <td>
+                                                <form action="{% url 'add_basket_prod' item.book.pk %}" method="post">
+                                                    {{ item.update_count_form.count_prod}}
+                                                    {{ item.update_count_form.update }}
+                                                    <input type="submit" value="Обновить">
+                                                    {% csrf_token %}
+                                                </form>
+
+                                            </td>
+                                            <td class="product-quantity"><span>{{item.count_prod}}</span></td>
+                                            <td class="product-subtotal"><span>{{ item.total_price }}</span></td>
+                                            <td class="product-remove"><a href="{% url 'remove_basket_prod' item.book.pk  %}">X</a></td>
+                                        </tr>
+
+
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form> 
+                        <div class="cartbox__btn">
+                            <ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
+                                <li><a href="#">Coupon Code</a></li>
+                                <li><a href="{% url 'clear_basket_prod' %}">Очистить корзину</a></li>
+                                <li><a href="#">Update Cart</a></li>
+                                <li><a href="#">Check Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-6">
+                        <div class="cartbox__total__area">
+
+                            <div class="cart__total__amount">
+                                <span>Grand Total</span>
+                                <span>{{ basket.get_total_full_price}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <!-- cart-main-area end -->
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}

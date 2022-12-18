@@ -1,0 +1,43 @@
+﻿	{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+	{% include 'inc/_header_forms.html' %}
+
+<!-- Start Checkout Area -->
+
+<section class="wn__checkout__area section-padding--lg bg__white">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="wn_checkout_wrap">
+					<div class="checkout_info">
+						<span>Поставщик</span>
+						<a class="showlogin" href="#">Нажмите для ввода</a>
+					</div>
+					<div class="checkout_login">
+						<form method="post" class="wn__checkout__form">
+                            {% csrf_token %}
+							<p>Новый поставщик</p>
+                            {% for field in form %}
+                                <div>
+				                    <div>
+					                    <label for="{{ field.id_for_label }}">{{ field.label }}<span>*</span></label>
+				                    </div>
+                                    {{ field }}
+                                </div>
+                                {{ field.errors }}
+                            {% endfor %}
+                            <br><br>
+
+							<div class="form__btn">
+								<button>Добавить</button>
+
+                            </div>
+						</form>
+					</div>
+</section>
+<!-- End Checkout Area -->
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}

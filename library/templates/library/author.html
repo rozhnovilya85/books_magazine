@@ -1,0 +1,43 @@
+﻿	{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+	{% include 'inc/_header_account.html' %}
+
+        <!-- Start Team Area -->
+        <section class="wn__team__area pt--40 pb--75 bg--white">
+        	<div class="container">
+        		<div class="row">
+                    {% for author in authors_list %}
+                    <!-- Start Single Team -->
+        			<div class="col-lg-3">
+        				<div class="wn__team text-center">
+        					<div class="thumb" >
+                                <a href="{% url 'author_detail' author.pk %}">
+        						<img src="{{ author.photo.url }}" alt="Team images"  height="300">
+                                </a>
+        					</div>
+        					<div class="content">
+        						<h4>{{ author.author_name }} {{ author.author_firstname }}</h4>
+        						<p>Head</p>
+        						<ul class="team__social__net">
+        							<li><a href="#"><i class="icon-social-twitter icons"></i></a></li>
+        							<li><a href="#"><i class="icon-social-tumblr icons"></i></a></li>
+        							<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
+        							<li><a href="#"><i class="icon-social-linkedin icons"></i></a></li>
+        							<li><a href="#"><i class="icon-social-pinterest icons"></i></a></li>
+        						</ul>
+        					</div>
+        				</div>
+        			</div>
+        			<!-- End Single Team -->
+                    {% endfor %}
+
+
+        		</div>
+        	</div>
+        </section>
+        <!-- End Team Area -->
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}

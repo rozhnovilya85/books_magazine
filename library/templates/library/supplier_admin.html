@@ -1,0 +1,85 @@
+﻿	{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+	{% include 'inc/_header_account.html' %}
+
+        <div class="wishlist-area section-padding--lg bg__white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="wishlist-content">
+                            <form action="#">
+                                <div class="wishlist-table wnro__table table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th class="product-remove"></th>
+                                                <th class="product-thumbnail"></th>
+                                                <th class="product-name"><span class="nobr">Название</span></th>
+                                                <th class="product-price"><span class="nobr"> ФИО Агента </span></th>
+                                                <th class="product-stock-stauts"><span class="nobr"> Статус </span></th>
+                                                <th class="product-add-to-cart"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in supplier_list %}
+                                            <tr>
+                                                <td class="product-remove"><a type="button" data-toggle="modal" data-target="#exampleModalLive{{ item.pk }}">Del</a></td>
+                                                <td class="product-thumbnail"><a href="#"><img src="{% static 'css/images/product/sm-3/1.jpg' %}" alt=""></a></td>
+                                                <td class="product-name"><a href="#">{{ item.title }}</a></td>
+                                                <td class="product-price">{{item.agent_firstname}} {{item.agent_name}} {{item.agent_patronymic}}</td>
+                                                <td class="product-stock-status"><span class="wishlist-in-stock">{{item.exist}}</span></td>
+                                                <td class="product-add-to-cart"><a href="{% url 'supplire_update' item.pk %}">Редактирование</a></td>
+                                            </tr>
+                                             <!-- Модальное окно -->
+                                                 <div id="exampleModalLive{{ item.pk }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLiveLabel">Подтвердите удаление поставщика</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <p>При подтверждении поставщик удалится из базы данных без возможности востанавления!</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+
+                                               <form method="post" action="{% url 'supplire_delete' item.pk %}">
+                                                   {% csrf_token %}
+                                            <button
+                                                    type="submit" class="btn btn-danger">Удалить</button>
+                                                   </form>
+
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                        {% endfor %}
+                                        <tr>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td> </td>
+                                                <td class="product-add-to-cart"><a href="{% url 'supplier_form_class' %}">Добавить поставщика</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}
