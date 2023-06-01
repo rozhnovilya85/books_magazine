@@ -1,0 +1,315 @@
+﻿	{% extends 'base.html' %}
+	{% load static %}
+	{% block content %}
+    {% include 'inc/_header_account.html' %}
+
+        <!-- Start Shop Page -->
+		<section class="page-shop-sidebar left--sidebar bg--white section-padding--lg">
+			<div itemscope itemtype="http://schema.org/Product" class="container">
+				<div class="row">
+					<div class="col-lg-9 col-12">
+						<div class="row">
+							<div class="col-lg-12">
+								<div
+									class="shop__list__wrapper d-flex flex-wrap flex-md-nowrap justify-content-between">
+									<div class="shop__list nav justify-content-center" role="tablist">
+										<a class="nav-item nav-link active" data-toggle="tab" href="#nav-grid"
+											role="tab"><i class="fa fa-th"></i></a>
+										<a class="nav-item nav-link" data-toggle="tab" href="#nav-list" role="tab"><i
+												class="fa fa-list"></i></a>
+									</div>
+									<p>Showing {{ books_list.count }} results</p>
+									<div class="orderby__wrapper">
+										<span>Sort By</span>
+										<select class="shot__byselect">
+											<option>Default sorting</option>
+											<option>HeadPhone</option>
+											<option>Furniture</option>
+											<option>Jewellery</option>
+											<option>Handmade</option>
+											<option>Kids</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab__container">
+							<div class="shop-grid tab-pane fade show active" id="nav-grid" role="tabpanel">
+								<div class="row">
+									<!-- Start Single Product -->
+                                    {% for item in books_list %}
+									<div class="col-lg-4 col-md-4 col-sm-6 col-12">
+										<div class="product">
+											<div class="product__thumb">
+												{% if item.photo %}
+											<a itemprop="image" class="first__img" href="{% url 'book_detail' item.pk %}"><img src="{{ item.photo.url }}" alt="product image"  height="350"></a>
+                                            {% else %}
+                                            <a itemprop="image" class="first__img" href="{% url 'book_detail' item.pk %}"><img src="{% static 'images/icon_defal.jpg' %}" alt="product image" height="350"></a>
+                                            {% endif %}
+												<div class="new__box">
+													<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="new-label">{{item.status_book}}</span>
+												</div>
+												<ul class="prize position__right__bottom d-flex">
+													<li itemprop="price" content="{{ item.price }}">{{ item.price }} р.</li>
+
+												</ul>
+												<div class="action">
+													<div class="actions_inner">
+														<ul class="add_to_links">
+															<li><a class="cart" href="cart.html"></a></li>
+															<li><a class="wishlist" href="wishlist.html"></a></li>
+															<li><a class="compare" href="compare.html"></a></li>
+															<li><a data-toggle="modal" title="Quick View"
+																	class="quickview modal-view detail-link"
+																	href="#productmodal"></a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<div class="product__content">
+												<h4 itemprop="name"><a href="{% url 'book_detail' item.pk %}">{{item.name}}</a></h4>
+												<ul class="rating d-flex">
+													<li class="on"><i class="fa fa-star-o"></i></li>
+													<li class="on"><i class="fa fa-star-o"></i></li>
+													<li class="on"><i class="fa fa-star-o"></i></li>
+													<li><i class="fa fa-star-o"></i></li>
+													<li><i class="fa fa-star-o"></i></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+                                    {% endfor %}
+									<!-- End Single Product -->
+                                </div>
+
+
+
+							</div>
+							<div class="shop-grid tab-pane fade" id="nav-list" role="tabpanel">
+								<div class="list__view__wrapper">
+									<!-- Start Single Product -->
+									<div class="list__view">
+										<div class="thumb">
+											<a class="first__img" href="single-product.html"><img
+													src="images/product/1.jpg" alt="product images"></a>
+											<a class="second__img animation1" href="single-product.html"><img
+													src="images/product/2.jpg" alt="product images"></a>
+										</div>
+										<div class="content">
+											<h2><a href="single-product.html">adipiscing</a></h2>
+											<ul class="rating d-flex">
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+											</ul>
+											<ul class="prize__box">
+												<li>$111.00</li>
+												<li class="old__prize">$220.00</li>
+											</ul>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla
+												augue nec est tristique auctor. Donec non est at libero vulputate
+												rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi,
+												vulputate adipiscing cursus eu, suscipit id nulla.</p>
+											<ul class="cart__action d-flex">
+												<li class="cart"><a href="cart.html">Add to cart</a></li>
+												<li class="wishlist"><a href="cart.html"></a></li>
+												<li class="compare"><a href="cart.html"></a></li>
+											</ul>
+
+										</div>
+									</div>
+									<!-- End Single Product -->
+									<!-- Start Single Product -->
+									<div class="list__view mt--40">
+										<div class="thumb">
+											<a class="first__img" href="single-product.html"><img
+													src="images/product/2.jpg" alt="product images"></a>
+											<a class="second__img animation1" href="single-product.html"><img
+													src="images/product/4.jpg" alt="product images"></a>
+										</div>
+										<div class="content">
+											<h2><a href="single-product.html">Voyage Yoga Bag</a></h2>
+											<ul class="rating d-flex">
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+											</ul>
+											<ul class="prize__box">
+												<li>$111.00</li>
+												<li class="old__prize">$220.00</li>
+											</ul>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla
+												augue nec est tristique auctor. Donec non est at libero vulputate
+												rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi,
+												vulputate adipiscing cursus eu, suscipit id nulla.</p>
+											<ul class="cart__action d-flex">
+												<li class="cart"><a href="cart.html">Add to cart</a></li>
+												<li class="wishlist"><a href="cart.html"></a></li>
+												<li class="compare"><a href="cart.html"></a></li>
+											</ul>
+										</div>
+									</div>
+									<!-- End Single Product -->
+									<!-- Start Single Product -->
+									<div class="list__view mt--40">
+										<div class="thumb">
+											<a class="first__img" href="single-product.html"><img
+													src="images/product/3.jpg" alt="product images"></a>
+											<a class="second__img animation1" href="single-product.html"><img
+													src="images/product/6.jpg" alt="product images"></a>
+										</div>
+										<div class="content">
+											<h2><a href="single-product.html">Impulse Duffle</a></h2>
+											<ul class="rating d-flex">
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+											</ul>
+											<ul class="prize__box">
+												<li>$111.00</li>
+												<li class="old__prize">$220.00</li>
+											</ul>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla
+												augue nec est tristique auctor. Donec non est at libero vulputate
+												rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi,
+												vulputate adipiscing cursus eu, suscipit id nulla.</p>
+											<ul class="cart__action d-flex">
+												<li class="cart"><a href="cart.html">Add to cart</a></li>
+												<li class="wishlist"><a href="cart.html"></a></li>
+												<li class="compare"><a href="cart.html"></a></li>
+											</ul>
+
+										</div>
+									</div>
+									<!-- End Single Product -->
+									<!-- Start Single Product -->
+									<div class="list__view mt--40">
+										<div class="thumb">
+											<a class="first__img" href="single-product.html"><img
+													src="images/product/4.jpg" alt="product images"></a>
+											<a class="second__img animation1" href="single-product.html"><img
+													src="images/product/6.jpg" alt="product images"></a>
+										</div>
+										<div class="content">
+											<h2><a href="single-product.html">Strive Shoulder Pack</a></h2>
+											<ul class="rating d-flex">
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+											</ul>
+											<ul class="prize__box">
+												<li>$111.00</li>
+												<li class="old__prize">$220.00</li>
+											</ul>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla
+												augue nec est tristique auctor. Donec non est at libero vulputate
+												rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi,
+												vulputate adipiscing cursus eu, suscipit id nulla.</p>
+											<ul class="cart__action d-flex">
+												<li class="cart"><a href="cart.html">Add to cart</a></li>
+												<li class="wishlist"><a href="cart.html"></a></li>
+												<li class="compare"><a href="cart.html"></a></li>
+											</ul>
+										</div>
+									</div>
+									<!-- End Single Product -->
+									<!-- Start Single Product -->
+									<div class="list__view mt--40">
+										<div class="thumb">
+											<a class="first__img" href="single-product.html"><img
+													src="images/product/5.jpg" alt="product images"></a>
+											<a class="second__img animation1" href="single-product.html"><img
+													src="images/product/9.jpg" alt="product images"></a>
+										</div>
+										<div class="content">
+											<h2><a href="single-product.html">Strive Shoulder Pack</a></h2>
+											<ul class="rating d-flex">
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li class="on"><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+												<li><i class="fa fa-star-o"></i></li>
+											</ul>
+											<ul class="prize__box">
+												<li>$111.00</li>
+												<li class="old__prize">$220.00</li>
+											</ul>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla
+												augue nec est tristique auctor. Donec non est at libero vulputate
+												rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi,
+												vulputate adipiscing cursus eu, suscipit id nulla.</p>
+											<ul class="cart__action d-flex">
+												<li class="cart"><a href="cart.html">Add to cart</a></li>
+												<li class="wishlist"><a href="cart.html"></a></li>
+												<li class="compare"><a href="cart.html"></a></li>
+											</ul>
+										</div>
+									</div>
+									<!-- End Single Product -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-12 md-mt-40 sm-mt-40">
+						<div class="shop__sidebar">
+                        <form action="{% url 'book_filter' %}" method="get">
+							<aside class="wedget__categories poroduct--cat">
+        						<h3 class="wedget__title">Жанр</h3>
+        						<ul>
+                                    {% for genre in view.get_genres %}
+        							<li>
+                                        <input type="checkbox" class="checkbox"name="genre" value="{{genre.id}}">
+                                        <span class="span editContent">{{ genre }}</span>
+                                    </li>
+                                    {% endfor %}
+        						</ul>
+        					</aside>
+
+                            <aside class="wedget__categories poroduct--cat">
+        						<h3 class="wedget__title">Автор</h3>
+        						<ul>
+                                    {% for author in view.get_authors %}
+        							<li>
+                                        <input type="checkbox" class="checkbox" name="authors" value="{{author.id}}">
+                                        <span class="span editContent">{{ author.author_name }} {{ author.author_firstname }}</span>
+                                    </li>
+                                    {% endfor %}
+        						</ul>
+        					</aside>
+
+                            <aside class="wedget__categories poroduct--cat">
+        						<h3 class="wedget__title">Product Status</h3>
+        						<ul>
+                                    {% for status in view.get_status_books %}
+        							<li>
+                                        <input type="checkbox" class="checkbox"name="status" value="{{status}}">
+                                        <span class="span editContent">{{ status }}</span>
+                                    </li>
+                                    {% endfor %}
+        						</ul>
+        					</aside>
+                            <button type="submit">Найти</button>
+                        </form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Shop Page -->
+
+	{% include 'inc/_footer.html' %}
+
+	{% endblock %}
