@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('library.urls')),
     path('basket/', include('basket.urls')),
+    path('blog/', include('blog.urls')),
 ]
 
 if settings.DEBUG:

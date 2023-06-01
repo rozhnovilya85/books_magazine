@@ -1,7 +1,10 @@
 {% load static %}
+{% load meta_tags %}
+{% block meta_tags %}
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
+    {% include_meta_tags %}
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>{% block title %} {{title}} {% endblock %}</title>
@@ -34,6 +37,7 @@
 
 
 </head>
+{% endblock %}
 <body>
 	<!--[if lte IE 9]>
 		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>

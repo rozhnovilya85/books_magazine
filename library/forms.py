@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
+from django.forms import HiddenInput
 
 from library.models import book, Supplier, Author
 
@@ -94,6 +95,16 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput
     )
 
+
+class EditForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def pas(self):
+        for field_name, field in self.fields.items():
+            if field_name == 'password':
+                field.widget = HiddenInput()
 
 # email
 class ContactForm(forms.Form):

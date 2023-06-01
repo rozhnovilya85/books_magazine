@@ -165,6 +165,3 @@ class Cheque(models.Model):
 
 
 
-
-
-

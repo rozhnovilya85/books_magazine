@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-17fm%6d0-a!f3g=t)l(93&!q&=ze2z4!30g&zp^_yc^%gn#r6x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
-
+# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'library.apps.LibraryConfig',
     'basket.apps.BasketConfig',
     'rest_framework',
+    'metatags',
+    'blog',
+
 ]
 
 MIDDLEWARE = [
@@ -159,3 +162,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 # SESSION_SAVE_EVERY_REQUEST = True
 
 BASKET_SESSION_ID = 'basket'
+
+
+# CSRF_TRUSTED_ORIGINS = ['https://5710-46-163-139-63.ngrok-free.app']
+
+CSRF_TRUSTED_ORIGINS = ['https://*.app']

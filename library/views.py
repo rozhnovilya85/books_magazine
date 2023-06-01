@@ -2,19 +2,24 @@
 from django.contrib import messages
 from django.core.mail import send_mail, send_mass_mail
 from django.conf import settings
+from django.db.models import Max, Min
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views.generic.base import View
 
+from blog.models import Post
 from .forms import BookForm, SupplierForm, ContactForm, AuthorForm
 
 from django.shortcuts import render, redirect
 
+from django.db.models import Q
+
 # Create your views here.
-from library.models import book, Supplier, Author
+from library.models import book, Supplier, Author, Genre
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import RegistrationForm, LoginForm
@@ -24,6 +29,38 @@ from django.utils.decorators import method_decorator
 
 from basket.forms import BasketAddProductForm
 from .serializers import BookSerializer, AuthorSerializer
+
+
+class GenreAuthor:
+
+    def get_genres(self):
+        return Genre.objects.all()
+
+    def get_authors(self):
+        return Author.objects.all()
+
+    def get_status_books(self):
+        queryset = book.objects.all()
+        status_list = []
+        for item in queryset:
+            status_list.append(item.status_book)
+        unique_status = set(status_list)
+        return unique_status
+
+    def get_price_books(self):
+        price = book.objects.aggregate(Max('price'), Min('price'))
+        return price
+
+
+class FilterBooksView(GenreAuthor, ListView):
+    model = book
+    template_name = 'library/book_filter.html'
+    def get_queryset(self):
+        queryset = book.objects.filter(
+            Q(authors__in=self.request.GET.getlist('authors'))|
+            Q(genres__in=self.request.GET.getlist('genre'))|
+            Q(status_book__in=self.request.GET.getlist('status'))).distinct()
+        return queryset
 
 
 class AuthorListView(ListView):
@@ -49,8 +86,6 @@ class AuthorAdminListView(ListView):
     context_object_name = 'authors_list'
     extra_context = {'title': 'Администрирование авторов'}
     paginate_by = 8
-
-
 
 
 class AuthorCreateView(CreateView):
@@ -93,11 +128,24 @@ class BookListView(ListView):
     template_name = 'library/index.html'
     context_object_name = 'books_list'
     books_list_new = book.objects.all()
+    # post_list = Post.objects.all()
     extra_context = {'title': 'Главная страница', 'books': books_list_new}
     paginate_by = 8
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        object_list = super(BookListView, self).get_context_data(**kwargs)
+        object_list['post_list'] = Post.objects.all()[0:3]
+        return object_list
 
-class BookDetailView(DetailView):
+
+class BookListFilterView(GenreAuthor, ListView):
+    model = book
+    template_name = 'library/book_list.html'
+    context_object_name = 'books_list'
+    extra_context = {'title': 'Поиск'}
+
+
+class BookDetailView(GenreAuthor, DetailView):
     model = book
     template_name = 'library/book_detail.html'
     context_object_name = 'book_item'
@@ -106,6 +154,8 @@ class BookDetailView(DetailView):
     books = book.objects.all()
     extra_context = {'form_basket': form, 'title': 'Подробнее', 'books': books}
     allow_empty = False
+
+
 
 
 class BookCreateView(CreateView):
@@ -330,6 +380,10 @@ def send_contact_email(request):
     else:
         form = ContactForm()
     return render(request, 'library/contact.html', {'title': 'Предложения и пожелания', 'form': form})
+
+
+
+
 
 # API
 
